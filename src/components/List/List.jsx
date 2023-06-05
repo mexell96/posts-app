@@ -4,7 +4,7 @@ import { Card, Col, Figure, NavLink } from "react-bootstrap";
 import Avatar from "../../img/avatar.svg";
 import Comments from "../Comments/Comments";
 
-const List = ({ post }) => (
+const List = ({ post, profileId }) => (
   <Col>
     <Card bg="primary" text="white">
       <Card.Body>
@@ -24,7 +24,7 @@ const List = ({ post }) => (
             />
           </Figure>
         </NavLink>
-        <Comments post={post} />
+        <Comments post={post} profileId={profileId} />
       </Card.Body>
     </Card>
   </Col>

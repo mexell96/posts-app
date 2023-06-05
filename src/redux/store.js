@@ -9,7 +9,12 @@ import posts, {
   GET_COMMENTS,
   getCommentsSaga,
 } from "./posts";
-import users, { GET_USER, getUserSaga } from "./users";
+import users, {
+  GET_USER,
+  getUserSaga,
+  GET_COMMENTS_PROFILE,
+  getCommentsProfileSaga,
+} from "./users";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -17,6 +22,7 @@ function* sagas() {
   yield takeEvery(GET_POSTS, getPostsSaga);
   yield takeEvery(GET_USER, getUserSaga);
   yield takeEvery(GET_COMMENTS, getCommentsSaga);
+  yield takeEvery(GET_COMMENTS_PROFILE, getCommentsProfileSaga);
 }
 
 export const store = configureStore({

@@ -2,17 +2,22 @@ import { Accordion } from "react-bootstrap";
 
 import { useStoreDispatch } from "../../redux/store";
 import { getComments } from "../../redux/posts";
+import { getCommentsProfile } from "../../redux/users";
 
 import Loader from "../Loader";
 
-const Comments = ({ post }) => {
+const Comments = ({ post, profileId }) => {
   const { id, comments, loading } = post;
   const dispatch = useStoreDispatch();
 
   const handleGetComments = (postId) => {
     if (!comments?.length) {
       setTimeout(() => {
-        dispatch(getComments({ id: postId }));
+        if (profileId) {
+          dispatch(getCommentsProfile({ postId, profileId }));
+        } else {
+          dispatch(getComments({ id: postId }));
+        }
       }, 500);
     }
   };
