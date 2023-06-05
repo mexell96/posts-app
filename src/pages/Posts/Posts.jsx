@@ -40,6 +40,7 @@ const Posts = () => {
       )
     );
     setHasFilter(true);
+    setCurrentPage(1);
     navigate(`/`);
   };
 

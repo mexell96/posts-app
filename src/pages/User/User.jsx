@@ -53,11 +53,13 @@ const User = () => {
                   <List post={post} key={post.id} profileId={currentUser} />
                 ))}
           </Row>
-          <PaginationComp
-            postsLength={user?.posts?.length}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
+          {!!user?.posts?.length && (
+            <PaginationComp
+              postsLength={user?.posts?.length}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
         </>
       )}
     </div>
