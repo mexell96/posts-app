@@ -1,5 +1,5 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
-import { put } from "redux-saga/effects";
+import {  delay, put } from "redux-saga/effects";
 
 import { getPostsApi } from "../api/posts";
 import { getCommentsApi } from "../api/comments";
@@ -8,7 +8,7 @@ export function* getPostsSaga() {
   try {
     yield put(setLoadingPosts(true));
     const payload = yield getPostsApi().then((response) => response.data);
-
+    yield delay(500);
     yield put(getPostsSuccess(payload));
     yield put(setLoadingPosts(false));
   } catch (error) {
@@ -19,7 +19,7 @@ export function* getCommentsSaga({ payload: { id } }) {
   try {
     yield put(setLoadingComments({ id, loading: true }));
     const payload = yield getCommentsApi(id).then((response) => response.data);
-
+    yield delay(500);
     yield put(getCommentsSuccess({ id, comments: payload }));
     yield put(setLoadingComments({ id, loading: false }));
   } catch (error) {

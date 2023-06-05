@@ -12,13 +12,11 @@ const Comments = ({ post, profileId }) => {
 
   const handleGetComments = (postId) => {
     if (!comments?.length) {
-      setTimeout(() => {
-        if (profileId) {
-          dispatch(getCommentsProfile({ postId, profileId }));
-        } else {
-          dispatch(getComments({ id: postId }));
-        }
-      }, 500);
+      if (profileId) {
+        dispatch(getCommentsProfile({ postId, profileId }));
+      } else {
+        dispatch(getComments({ id: postId }));
+      }
     }
   };
 

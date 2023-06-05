@@ -1,5 +1,5 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
-import { put } from "redux-saga/effects";
+import { delay, put } from "redux-saga/effects";
 
 import { getUserApi, getProfileApi, getUserPostsApi } from "../api/users";
 import { getCommentsApi } from "../api/comments";
@@ -7,7 +7,6 @@ import { getCommentsApi } from "../api/comments";
 export function* getProfileSaga() {
   try {
     const payload = yield getProfileApi().then((response) => response.data);
-
     yield put(getProfileSuccess(payload));
   } catch (error) {
     console.log("error", error);
@@ -17,12 +16,11 @@ export function* getProfileSaga() {
 export function* getUserSaga({ payload: { id } }) {
   try {
     yield put(setLoading(true));
-
     const user = yield getUserApi(id).then((response) => response.data);
     const userPosts = yield getUserPostsApi(id).then(
       (response) => response.data
     );
-
+    yield delay(500);
     yield put(getUserSuccess({ ...user, posts: userPosts }));
     yield put(setLoading(false));
   } catch (error) {
@@ -36,7 +34,7 @@ export function* getCommentsProfileSaga({ payload: { postId, profileId } }) {
     const payload = yield getCommentsApi(postId).then(
       (response) => response.data
     );
-
+    yield delay(500);
     yield put(
       getCommentsProfileSuccess({ profileId, postId, comments: payload })
     );
