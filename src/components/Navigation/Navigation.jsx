@@ -1,9 +1,21 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Image, Nav, Navbar, NavLink } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 import Avatar from "../../img/avatar.svg";
 
+import { getProfile } from "../../redux/users";
+import { useStoreDispatch } from "../../redux/store";
+
 const Navigation = () => {
+  const dispatch = useStoreDispatch();
+  const { current } = useSelector((state) => state.users);
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
+
   return (
     <Navbar
       collapseOnSelect
@@ -17,8 +29,8 @@ const Navigation = () => {
         <Nav>
           <NavLink eventKey="2" as={Link} to="/about">
             <Image src={Avatar} roundedCircle width={30} />
-            <span className="ps-2 pe-2">name</span>
-            <span>email</span>
+            <span className="ps-2 pe-2">{current?.name}</span>
+            <span>{current?.email}</span>
           </NavLink>
           <NavLink eventKey="1" as={Link} to="/">
             Posts

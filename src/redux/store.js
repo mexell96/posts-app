@@ -10,6 +10,8 @@ import posts, {
   getCommentsSaga,
 } from "./posts";
 import users, {
+  GET_PROFILE,
+  getProfileSaga,
   GET_USER,
   getUserSaga,
   GET_COMMENTS_PROFILE,
@@ -20,6 +22,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 function* sagas() {
   yield takeEvery(GET_POSTS, getPostsSaga);
+  yield takeEvery(GET_PROFILE, getProfileSaga);
   yield takeEvery(GET_USER, getUserSaga);
   yield takeEvery(GET_COMMENTS, getCommentsSaga);
   yield takeEvery(GET_COMMENTS_PROFILE, getCommentsProfileSaga);

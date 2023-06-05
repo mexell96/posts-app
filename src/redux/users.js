@@ -1,8 +1,18 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import { put } from "redux-saga/effects";
 
-import { getUserApi, getUserPostsApi } from "../api/users";
+import { getUserApi, getProfileApi, getUserPostsApi } from "../api/users";
 import { getCommentsApi } from "../api/comments";
+
+export function* getProfileSaga() {
+  try {
+    const payload = yield getProfileApi().then((response) => response.data);
+
+    yield put(getProfileSuccess(payload));
+  } catch (error) {
+    console.log("error", error);
+  }
+}
 
 export function* getUserSaga({ payload: { id } }) {
   try {
@@ -39,12 +49,16 @@ export function* getCommentsProfileSaga({ payload: { postId, profileId } }) {
 const usersSlice = createSlice({
   name: "users",
   initialState: {
+    current: {},
     list: [],
     loading: false,
   },
   reducers: {
     setLoading: (state, action) => {
       state.loading = action.payload;
+    },
+    getProfileSuccess: (state, action) => {
+      state.current = action.payload;
     },
     getUserSuccess: (state, action) => {
       state.list.push(action.payload);
@@ -82,6 +96,9 @@ const usersSlice = createSlice({
   },
 });
 
+export const GET_PROFILE = "users/getProfile";
+export const getProfile = createAction(GET_PROFILE);
+
 export const GET_USER = "users/getUser";
 export const getUser = createAction(GET_USER);
 
@@ -89,6 +106,7 @@ export const GET_COMMENTS_PROFILE = "users/getCommentsProfile";
 export const getCommentsProfile = createAction(GET_COMMENTS_PROFILE);
 
 export const {
+  getProfileSuccess,
   getUserSuccess,
   setLoading,
   setLoadingComments,
