@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Card, Col, Figure, NavLink } from "react-bootstrap";
 
 import Avatar from "../../img/avatar.svg";
+import Comments from "../Comments/Comments";
 
 const List = ({ post }) => (
   <Col>
@@ -23,6 +24,7 @@ const List = ({ post }) => (
             />
           </Figure>
         </NavLink>
+        <Comments post={post} />
       </Card.Body>
     </Card>
   </Col>
