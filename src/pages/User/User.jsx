@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
-import { Card, Row } from "react-bootstrap";
+import { Button, Card, NavLink, Row } from "react-bootstrap";
 
 import List from "../../components/List";
 import PaginationComp from "../../components/PaginationComp";
@@ -10,6 +10,7 @@ import PaginationComp from "../../components/PaginationComp";
 import { useStoreDispatch } from "../../redux/store";
 import { getUser } from "../../redux/users";
 import Loader from "../../components/Loader/Loader";
+import { Link } from "react-router-dom";
 
 const User = () => {
   const { pathname, search } = useLocation();
@@ -35,6 +36,9 @@ const User = () => {
         <Loader />
       ) : (
         <>
+          <NavLink as={Link} to={`/`} className="me-auto mx-3">
+            <Button variant="primary">Back</Button>
+          </NavLink>
           <Card className="w-100 mt-3 m-auto">
             <Card.Header>{user?.name}</Card.Header>
             <Card.Body>
