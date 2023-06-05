@@ -13,7 +13,7 @@ const List = ({ post, profileId }) => (
         <NavLink
           as={Link}
           to={`/users/${post.userId}?page=${1}`}
-          className="d-sm-inline-block">
+          className="d-inline-block">
           <Figure className="m-0">
             <Figure.Image
               width={50}

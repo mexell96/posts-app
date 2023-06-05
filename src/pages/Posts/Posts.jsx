@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import PaginationComp from "../../components/PaginationComp";
 import Search from "../../components/Search";
@@ -8,7 +9,6 @@ import List from "../../components/List";
 import Sorting from "../../components/Sorting";
 import Loader from "../../components/Loader";
 
-import { useSelector } from "react-redux";
 import { getPosts, setPosts } from "../../redux/posts";
 import { useStoreDispatch } from "../../redux/store";
 
@@ -18,13 +18,13 @@ const Posts = () => {
   const [currentPage, setCurrentPage] = useState(
     Number(pathname.split("/")?.[1]) || 1
   );
-  const { loadingPosts } = useSelector((state) => state.posts);
   const [text, setText] = useState("");
   const [hasFilter, setHasFilter] = useState(false);
   const [selectValue, setSelectValue] = useState("");
   const navigate = useNavigate();
 
   const dispatch = useStoreDispatch();
+  const { loadingPosts } = useSelector((state) => state.posts);
   const posts = useSelector((state) => state.posts.list);
 
   useEffect(() => {

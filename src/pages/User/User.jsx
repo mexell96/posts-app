@@ -1,34 +1,31 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
-
+import { Link } from "react-router-dom";
 import { Button, Card, NavLink, Row } from "react-bootstrap";
 
 import List from "../../components/List";
 import PaginationComp from "../../components/PaginationComp";
+import Loader from "../../components/Loader";
 
 import { useStoreDispatch } from "../../redux/store";
 import { getUser } from "../../redux/users";
-import Loader from "../../components/Loader/Loader";
-import { Link } from "react-router-dom";
 
 const User = () => {
-  const { pathname, search } = useLocation();
-
   const dispatch = useStoreDispatch();
+  const { pathname, search } = useLocation();
+  const [currentPage, setCurrentPage] = useState(
+    Number(search.split("=")?.[1]) || 1
+  );
   const currentUser = Number(pathname.split("/")?.[2]);
   const users = useSelector((state) => state.users.list);
   const user = users?.find((user) => user.id === currentUser);
 
   const loading = useSelector((state) => state.users.loading);
 
-  const [currentPage, setCurrentPage] = useState(
-    Number(search.split("=")?.[1]) || 1
-  );
-
   useEffect(() => {
     dispatch(getUser({ id: currentUser }));
-  }, [dispatch]);
+  }, [dispatch, currentUser]);
 
   return (
     <div className="pt-3 mt-5 d-flex justify-content-center align-items-center flex-column">
