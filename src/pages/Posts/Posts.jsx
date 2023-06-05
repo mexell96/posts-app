@@ -6,8 +6,11 @@ import List from "../../components/List";
 
 import { getPosts } from "../../redux/posts";
 import { useStoreDispatch } from "../../redux/store";
+import Loader from "../../components/Loader";
 
 const Posts = () => {
+  const { loadingPosts } = useSelector((state) => state.posts);
+
   const dispatch = useStoreDispatch();
   const posts = useSelector((state) => state.posts.list);
 
@@ -17,10 +20,13 @@ const Posts = () => {
 
   return (
     <div className="pt-5 d-flex justify-content-center align-items-center flex-column">
-      <Row xs={1} md={3} lg={4} xxl={5} className="g-4 p-2 m-0">
-        {!!posts?.length &&
-          posts?.map((post) => <List post={post} key={post.id} />)}
-      </Row>
+      {loadingPosts && !posts?.length && <Loader />}
+      {!loadingPosts && (
+        <Row xs={1} md={3} lg={4} xxl={5} className="g-4 p-2 m-0">
+          {!!posts?.length &&
+            posts?.map((post) => <List post={post} key={post.id} />)}
+        </Row>
+      )}
     </div>
   );
 };
