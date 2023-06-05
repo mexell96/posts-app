@@ -68,7 +68,9 @@ const Posts = () => {
             filterPosts={filterPosts}
             setHasFilter={setHasFilter}
           />
-          <Sorting setSelectValue={setSelectValue} />
+          {((!!posts?.length && !hasFilter) || !!filteredPosts.length) && (
+            <Sorting setSelectValue={setSelectValue} />
+          )}
           <Row xs={1} md={3} lg={4} xxl={5} className="g-4 p-2 m-0">
             {!!posts?.length &&
               !hasFilter &&
@@ -81,15 +83,17 @@ const Posts = () => {
                 ?.slice((currentPage - 1) * 10, currentPage * 10)
                 .map((post) => <List post={post} key={post.id} />)}
           </Row>
-          <PaginationComp
-            postsLength={
-              !!filteredPosts.length && hasFilter
-                ? filteredPosts.length
-                : posts?.length
-            }
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
+          {((!!posts?.length && !hasFilter) || !!filteredPosts.length) && (
+            <PaginationComp
+              postsLength={
+                !!filteredPosts.length && hasFilter
+                  ? filteredPosts.length
+                  : posts?.length
+              }
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
         </>
       )}
     </div>
