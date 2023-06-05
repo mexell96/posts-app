@@ -3,12 +3,18 @@ import { takeEvery } from "redux-saga/effects";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 
-import posts, { GET_POSTS, getPostsSaga } from "./posts";
+import posts, {
+  GET_POSTS,
+  getPostsSaga,
+  GET_COMMENTS,
+  getCommentsSaga,
+} from "./posts";
 
 const sagaMiddleware = createSagaMiddleware();
 
 function* sagas() {
   yield takeEvery(GET_POSTS, getPostsSaga);
+  yield takeEvery(GET_COMMENTS, getCommentsSaga);
 }
 
 export const store = configureStore({
