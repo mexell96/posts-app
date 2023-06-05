@@ -9,11 +9,13 @@ import posts, {
   GET_COMMENTS,
   getCommentsSaga,
 } from "./posts";
+import users, { GET_USER, getUserSaga } from "./users";
 
 const sagaMiddleware = createSagaMiddleware();
 
 function* sagas() {
   yield takeEvery(GET_POSTS, getPostsSaga);
+  yield takeEvery(GET_USER, getUserSaga);
   yield takeEvery(GET_COMMENTS, getCommentsSaga);
 }
 
@@ -21,6 +23,7 @@ export const store = configureStore({
   devTools: true,
   reducer: {
     posts,
+    users,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
