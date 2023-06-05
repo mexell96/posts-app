@@ -3,8 +3,10 @@ import { Accordion } from "react-bootstrap";
 import { useStoreDispatch } from "../../redux/store";
 import { getComments } from "../../redux/posts";
 
+import Loader from "../Loader";
+
 const Comments = ({ post }) => {
-  const { id, comments } = post;
+  const { id, comments, loading } = post;
   const dispatch = useStoreDispatch();
 
   const handleGetComments = (postId) => {
@@ -19,6 +21,7 @@ const Comments = ({ post }) => {
     <Accordion onClick={() => handleGetComments(id)}>
       <Accordion.Item eventKey="0">
         <Accordion.Header>Comments</Accordion.Header>
+        {loading && !comments?.length && <Loader comments={comments} />}
         {!!comments?.length &&
           comments?.map((comment) => (
             <Accordion.Body key={comment.id}>
