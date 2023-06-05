@@ -1,9 +1,9 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
-const Sorting = ({ setSelectValue }) => {
+const Sorting = ({ setSort }) => {
   const onChange = (event) => {
-    setSelectValue(event.target.value);
+    setSort(event.target.value);
   };
 
   return (

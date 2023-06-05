@@ -20,7 +20,7 @@ const Posts = () => {
   );
   const [text, setText] = useState("");
   const [hasFilter, setHasFilter] = useState(false);
-  const [selectValue, setSelectValue] = useState("");
+  const [sort, setSort] = useState("");
   const navigate = useNavigate();
 
   const dispatch = useStoreDispatch();
@@ -45,18 +45,20 @@ const Posts = () => {
   };
 
   useEffect(() => {
-    const sortedPosts = [...posts]?.sort(function (a, b) {
-      if (a.title < b.title) {
-        return selectValue === "up" ? -1 : 1;
+    const sortedPosts = (hasFilter ? [...filteredPosts] : [...posts])?.sort(
+      (a, b) => {
+        if (a.title < b.title) {
+          return sort === "up" ? -1 : 1;
+        }
+        if (a.title > b.title) {
+          return sort === "up" ? 1 : -1;
+        }
+        return 0;
       }
-      if (a.title > b.title) {
-        return selectValue === "up" ? 1 : -1;
-      }
-      return 0;
-    });
+    );
 
-    dispatch(setPosts(sortedPosts));
-  }, [selectValue]);
+    hasFilter ? setFilteredPosts(sortedPosts) : dispatch(setPosts(sortedPosts));
+  }, [sort]);
 
   return (
     <div className="pt-5 d-flex justify-content-center align-items-center flex-column">
@@ -70,7 +72,7 @@ const Posts = () => {
             setHasFilter={setHasFilter}
           />
           {((!!posts?.length && !hasFilter) || !!filteredPosts.length) && (
-            <Sorting setSelectValue={setSelectValue} />
+            <Sorting setSort={setSort} />
           )}
           <Row xs={1} md={3} lg={4} xxl={5} className="g-4 p-2 m-0">
             {!!posts?.length &&
