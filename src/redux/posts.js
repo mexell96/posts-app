@@ -47,6 +47,9 @@ const postsSlice = createSlice({
     getPostsSuccess: (state, action) => {
       state.list = action.payload;
     },
+    setPosts: (state, action) => {
+      state.list = action.payload;
+    },
     getCommentsSuccess: (state, action) => {
       state.list = state.list.map((post) =>
         post.id === action.payload.id
@@ -65,6 +68,7 @@ export const getComments = createAction(GET_COMMENTS);
 
 export const {
   getPostsSuccess,
+  setPosts,
   getCommentsSuccess,
   setLoadingPosts,
   setLoadingComments,
