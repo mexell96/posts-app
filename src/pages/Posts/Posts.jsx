@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
+import PaginationComp from "../../components/PaginationComp";
 import Search from "../../components/Search";
 import List from "../../components/List";
 import Sorting from "../../components/Sorting";
 import Loader from "../../components/Loader";
 
+import { useSelector } from "react-redux";
 import { getPosts, setPosts } from "../../redux/posts";
 import { useStoreDispatch } from "../../redux/store";
 
 const Posts = () => {
+  const { pathname } = useLocation();
   const [filteredPosts, setFilteredPosts] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(
+    Number(pathname.split("/")?.[1]) || 1
+  );
   const { loadingPosts } = useSelector((state) => state.posts);
-
-  const dispatch = useStoreDispatch();
-  const posts = useSelector((state) => state.posts.list);
-
   const [text, setText] = useState("");
   const [hasFilter, setHasFilter] = useState(false);
   const [selectValue, setSelectValue] = useState("");
   const navigate = useNavigate();
+
+  const dispatch = useStoreDispatch();
+  const posts = useSelector((state) => state.posts.list);
 
   useEffect(() => {
     dispatch(getPosts());
@@ -69,11 +72,24 @@ const Posts = () => {
           <Row xs={1} md={3} lg={4} xxl={5} className="g-4 p-2 m-0">
             {!!posts?.length &&
               !hasFilter &&
-              posts?.map((post) => <List post={post} key={post.id} />)}
+              posts
+                ?.slice((currentPage - 1) * 10, currentPage * 10)
+                .map((post) => <List post={post} key={post.id} />)}
             {!!filteredPosts.length &&
               hasFilter &&
-              filteredPosts?.map((post) => <List post={post} key={post.id} />)}
+              filteredPosts
+                ?.slice((currentPage - 1) * 10, currentPage * 10)
+                .map((post) => <List post={post} key={post.id} />)}
           </Row>
+          <PaginationComp
+            postsLength={
+              !!filteredPosts.length && hasFilter
+                ? filteredPosts.length
+                : posts?.length
+            }
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       )}
     </div>
