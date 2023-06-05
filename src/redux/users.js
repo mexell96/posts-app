@@ -1,15 +1,18 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import { put } from "redux-saga/effects";
 
-import { getUserApi } from "../api/users";
+import { getUserApi, getUserPostsApi } from "../api/users";
 
 export function* getUserSaga({ payload: { id } }) {
   try {
     yield put(setLoading(true));
 
     const user = yield getUserApi(id).then((response) => response.data);
+    const userPosts = yield getUserPostsApi(id).then(
+      (response) => response.data
+    );
 
-    yield put(getUserSuccess({ ...user }));
+    yield put(getUserSuccess({ ...user, posts: userPosts }));
     yield put(setLoading(false));
   } catch (error) {
     console.log("error", error);

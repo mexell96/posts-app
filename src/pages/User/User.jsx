@@ -1,14 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
-import { Card } from "react-bootstrap";
+
+import { Card, Row } from "react-bootstrap";
+
+import List from "../../components/List";
+import PaginationComp from "../../components/PaginationComp";
 
 import { useStoreDispatch } from "../../redux/store";
 import { getUser } from "../../redux/users";
-import Loader from "../../components/Loader";
+import Loader from "../../components/Loader/Loader";
 
 const User = () => {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   const dispatch = useStoreDispatch();
   const currentUser = Number(pathname.split("/")?.[2]);
@@ -16,6 +20,10 @@ const User = () => {
   const user = users?.find((user) => user.id === currentUser);
 
   const loading = useSelector((state) => state.users.loading);
+
+  const [currentPage, setCurrentPage] = useState(
+    Number(search.split("=")?.[1]) || 1
+  );
 
   useEffect(() => {
     dispatch(getUser({ id: currentUser }));
@@ -36,6 +44,19 @@ const User = () => {
               <Card.Text>{user?.website}</Card.Text>
             </Card.Body>
           </Card>
+          <Row xs={1} md={3} lg={4} xxl={5} className="g-4 p-2 m-0">
+            {!!user?.posts?.length &&
+              user?.posts
+                ?.slice((currentPage - 1) * 10, currentPage * 10)
+                .map((post) => (
+                  <List post={post} key={post.id} profileId={currentUser} />
+                ))}
+          </Row>
+          <PaginationComp
+            postsLength={user?.posts?.length}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       )}
     </div>
